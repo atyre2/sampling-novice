@@ -11,6 +11,7 @@ Paragraph(s) of introductory material.
 ## Topics
 
 1.  [Why worry?](01-sampling.html)
+2.  [Geneate a sample](02-sampling.html)
 
 
 ## Other Resources
