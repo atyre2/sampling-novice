@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <title>UNL: Sampling</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="css/swc.css" />
+    <link rel="alternate" type="application/rss+xml" title="Software Carpentry Blog" href="http://software-carpentry.org/feed.xml"/>
+    <meta charset="UTF-8" />
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body class="lesson">
+    <div class="container card">
+      <div class="banner">
+        <a href="http://snr.unl.edu" title="School of Natural Resources">
+          <img alt="UNL banner" src="img/R-UN_L4c_tag_4c.jpg" height="58" width="110"/>
+        </a>
+      </div>
+      <article>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+                    <a href="index.html"><h1 class="title">Sampling</h1></a>
+          <h2 class="subtitle">Generate a random sample</h2>
+          <section class="objectives panel panel-warning">
+<div class="panel-heading">
+<h2 id="learning-objectives"><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
+</div>
+<div class="panel-body">
+<ul>
+<li>Explore the use of the R function <code>sample()</code></li>
+</ul>
+</div>
+</section>
+<p>Once you have decided to use simple random sampling to choose your sites, how do you do it? There are two steps.</p>
+<ul>
+<li>Create or obtain a vector of all possible sampling units</li>
+<li>Use <code>sample()</code> to select the units you will use.</li>
+</ul>
+<p>In the following we load the list of 3rd order HUCs found in Nebraska, and draw a random sample of 50 of them with replacement.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># code to be exectued</span>
+sampleFrame &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="dv">1</span>:<span class="dv">1000</span>)
+sampleIndex &lt;-<span class="st"> </span><span class="kw">sample</span>(sampleFrame, <span class="dt">size =</span> <span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)
+sampleIndex</code></pre>
+<pre class="output"><code> [1] &quot;434&quot; &quot;386&quot; &quot;360&quot; &quot;447&quot; &quot;279&quot; &quot;605&quot; &quot;586&quot; &quot;636&quot; &quot;824&quot; &quot;786&quot; &quot;630&quot;
+[12] &quot;196&quot; &quot;301&quot; &quot;105&quot; &quot;690&quot; &quot;223&quot; &quot;251&quot; &quot;945&quot; &quot;843&quot; &quot;654&quot; &quot;859&quot; &quot;588&quot;
+[23] &quot;458&quot; &quot;854&quot; &quot;270&quot; &quot;467&quot; &quot;504&quot; &quot;390&quot; &quot;452&quot; &quot;630&quot; &quot;318&quot; &quot;289&quot; &quot;352&quot;
+[34] &quot;782&quot; &quot;797&quot; &quot;532&quot; &quot;676&quot; &quot;578&quot; &quot;498&quot; &quot;393&quot; &quot;448&quot; &quot;661&quot; &quot;792&quot; &quot;547&quot;
+[45] &quot;962&quot; &quot;705&quot; &quot;498&quot; &quot;509&quot; &quot;788&quot; &quot;789&quot;
+</code></pre>
+<p>The first argument to <code>sample()</code> is the sampleFrame, the vector with the ID of each sample unit. The second argument size indicates the number of units to sample. The first argument describes whether the sample is drawn with replacement or not.</p>
+        </div>
+      </div>
+      </article>
+      <div class="footer">
+        <a class="label swc-blue-bg" href="http://software-carpentry.org">Thanks to Software Carpentry</a>
+        <a class="label swc-blue-bg" href="https://github.com/atyre2/sampling-novice">Source</a>
+        <a class="label swc-blue-bg" href="mailto:atyre2@unl.edu">Contact</a>
+        <a class="label swc-blue-bg" href="LICENSE.html">License</a>
+      </div>
+    </div>
+    <!-- Javascript placed at the end of the document so the pages load faster -->
+    <script src="http://software-carpentry.org/v5/js/jquery-1.9.1.min.js"></script>
+    <script src="css/bootstrap/bootstrap-js/bootstrap.js"></script>
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+  </body>
+</html>
