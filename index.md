@@ -6,13 +6,12 @@ Paragraph(s) of introductory material.
 
 > ## Prerequisites {.prereq}
 >
-> No preliminary knowledge is assumed in this lesson. If you have not
-> completed the Git lessons, some of the material will not make sense, 
-> but it can be safely skipped.
+> You should have completed the introductory lessons on R before attempting this material.
 
 ## Topics
 
-1.  [Why Worry?](01-sampling.html)
+1.  [Why worry?](01-sampling.html)
+2.  [Generate a sample](02-sampling.html)
 
 
 ## Other Resources
