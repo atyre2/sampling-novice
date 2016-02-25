@@ -27,17 +27,34 @@
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
                     <a href="index.html"><h1 class="title">Sampling</h1></a>
-          <h2 class="subtitle">Why worry?</h2>
+          <h2 class="subtitle">Generate a random sample</h2>
           <section class="objectives panel panel-warning">
 <div class="panel-heading">
 <h2 id="learning-objectives"><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
 </div>
 <div class="panel-body">
 <ul>
-<li>Explain what can happen when sampling is not random.</li>
+<li>Explore the use of the R function <code>sample()</code></li>
 </ul>
 </div>
 </section>
+<p>Once you have decided to use simple random sampling to choose your sites, how do you do it? There are two steps.</p>
+<ul>
+<li>Create or obtain a vector of all possible sampling units</li>
+<li>Use <code>sample()</code> to select the units you will use.</li>
+</ul>
+<p>In the following we load the list of 3rd order HUCs found in Nebraska, and draw a random sample of 50 of them with replacement.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># code to be exectued</span>
+sampleFrame &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="dv">1</span>:<span class="dv">1000</span>)
+sampleIndex &lt;-<span class="st"> </span><span class="kw">sample</span>(sampleFrame, <span class="dt">size =</span> <span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)
+sampleIndex</code></pre></div>
+<pre class="output"><code> [1] &quot;140&quot; &quot;335&quot; &quot;265&quot; &quot;881&quot; &quot;489&quot; &quot;126&quot; &quot;758&quot; &quot;619&quot; &quot;610&quot; &quot;570&quot; &quot;22&quot; 
+[12] &quot;497&quot; &quot;132&quot; &quot;252&quot; &quot;243&quot; &quot;729&quot; &quot;198&quot; &quot;716&quot; &quot;290&quot; &quot;874&quot; &quot;508&quot; &quot;576&quot;
+[23] &quot;234&quot; &quot;629&quot; &quot;412&quot; &quot;325&quot; &quot;479&quot; &quot;967&quot; &quot;477&quot; &quot;600&quot; &quot;948&quot; &quot;190&quot; &quot;98&quot; 
+[34] &quot;315&quot; &quot;26&quot;  &quot;981&quot; &quot;431&quot; &quot;704&quot; &quot;868&quot; &quot;385&quot; &quot;757&quot; &quot;951&quot; &quot;880&quot; &quot;867&quot;
+[45] &quot;296&quot; &quot;85&quot;  &quot;735&quot; &quot;210&quot; &quot;201&quot; &quot;542&quot;
+</code></pre>
+<p>The first argument to <code>sample()</code> is the sampleFrame, the vector with the ID of each sample unit. The second argument size indicates the number of units to sample. The first argument describes whether the sample is drawn with replacement or not.</p>
         </div>
       </div>
       </article>

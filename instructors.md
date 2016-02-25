@@ -9,7 +9,7 @@ subtitle: Instructor's Guide
 
 * Point
 
-## [Why Worry?](01-sampling.html)
+## [The Data life cycle](01-sampling.html)
 
 * Point
 
