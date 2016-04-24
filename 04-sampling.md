@@ -31,17 +31,17 @@ sampleIndex
 
 
 ~~~{.output}
- [1] "921" "777" "368" "862" "597" "634" "245" "73"  "2"   "944" "97" 
-[12] "576" "962" "843" "153" "103" "99"  "255" "317" "228" "674" "105"
-[23] "606" "861" "502" "759" "759" "267" "792" "545" "909" "758" "118"
-[34] "33"  "284" "212" "980" "680" "403" "351" "489" "952" "676" "324"
-[45] "583" "851" "946" "702" "689" "416"
+ [1] "359" "799" "114" "881" "901" "216" "922" "896" "886" "893" "421"
+[12] "602" "988" "829" "894" "136" "760" "825" "687" "468" "56"  "111"
+[23] "527" "997" "248" "497" "667" "321" "641" "459" "471" "902" "818"
+[34] "7"   "462" "475" "968" "290" "170" "447" "891" "804" "535" "188"
+[45] "216" "411" "602" "520" "632" "906"
 
 ~~~
 
 The first argument to `sample()` is the sampleFrame, the vector with the ID of each sample unit. The second argument size indicates the number of units to sample. The first argument describes whether the sample is drawn with replacement or not.
 
-> ## Challenge: Drawing random samples {.Challenge}
+> ## Challenge: Drawing random samples {.challenge}
 >
 > Write R code to do the following tests:
 >
@@ -63,8 +63,8 @@ simple_sample
 
 
 ~~~{.output}
- [1] Pierce     Keith      Howard     Hall       Cedar      Wheeler   
- [7] Richardson Furnas     Logan      Holt      
+ [1] Nemaha     York       Wheeler    Custer     Dawes      Valley    
+ [7] Banner     Dundy      Richardson Kearney   
 93 Levels: Adams Antelope Arthur Banner Blaine Boone Box Butte ... York
 
 ~~~
@@ -88,7 +88,7 @@ sample(1:1000, size = 10)
 
 
 ~~~{.output}
- [1] 363 407 276 779 284 170 132 347  75 646
+ [1] 979 431 781 153 468 638 659  76 695 594
 
 ~~~
 
@@ -101,7 +101,7 @@ sample(1:1000, size = 10) # different
 
 
 ~~~{.output}
- [1] 470 598 912 201 948 962 785 601 232 136
+ [1] 673 157 113 997 567 171 264 123  32 690
 
 ~~~
 
@@ -158,7 +158,7 @@ sample(sample_frame$COUNTYNAME, size = 10, prob = sample_frame$area)
 
 ~~~
 
-> ## Challenge:  {.Challenge}
+> ## Challenge:  {.challenge}
 >
 > Draw a sample that is larger than the sample 
 >  frame.
@@ -323,7 +323,7 @@ matters probably depends on the projection
 in use as well as the extent over which the
 sample is being taken. 
 
-> ## Challenge: Picking random points  {.Challenge}
+> ## Challenge: Picking random points  {.challenge}
 >
 > Picking random points can work with any
 > size polygon. Choose 10 random points 

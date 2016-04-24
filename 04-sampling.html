@@ -48,35 +48,39 @@
 sampleFrame &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="dv">1</span>:<span class="dv">1000</span>)
 sampleIndex &lt;-<span class="st"> </span><span class="kw">sample</span>(sampleFrame, <span class="dt">size =</span> <span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)
 sampleIndex</code></pre></div>
-<pre class="output"><code> [1] &quot;921&quot; &quot;777&quot; &quot;368&quot; &quot;862&quot; &quot;597&quot; &quot;634&quot; &quot;245&quot; &quot;73&quot;  &quot;2&quot;   &quot;944&quot; &quot;97&quot; 
-[12] &quot;576&quot; &quot;962&quot; &quot;843&quot; &quot;153&quot; &quot;103&quot; &quot;99&quot;  &quot;255&quot; &quot;317&quot; &quot;228&quot; &quot;674&quot; &quot;105&quot;
-[23] &quot;606&quot; &quot;861&quot; &quot;502&quot; &quot;759&quot; &quot;759&quot; &quot;267&quot; &quot;792&quot; &quot;545&quot; &quot;909&quot; &quot;758&quot; &quot;118&quot;
-[34] &quot;33&quot;  &quot;284&quot; &quot;212&quot; &quot;980&quot; &quot;680&quot; &quot;403&quot; &quot;351&quot; &quot;489&quot; &quot;952&quot; &quot;676&quot; &quot;324&quot;
-[45] &quot;583&quot; &quot;851&quot; &quot;946&quot; &quot;702&quot; &quot;689&quot; &quot;416&quot;
+<pre class="output"><code> [1] &quot;359&quot; &quot;799&quot; &quot;114&quot; &quot;881&quot; &quot;901&quot; &quot;216&quot; &quot;922&quot; &quot;896&quot; &quot;886&quot; &quot;893&quot; &quot;421&quot;
+[12] &quot;602&quot; &quot;988&quot; &quot;829&quot; &quot;894&quot; &quot;136&quot; &quot;760&quot; &quot;825&quot; &quot;687&quot; &quot;468&quot; &quot;56&quot;  &quot;111&quot;
+[23] &quot;527&quot; &quot;997&quot; &quot;248&quot; &quot;497&quot; &quot;667&quot; &quot;321&quot; &quot;641&quot; &quot;459&quot; &quot;471&quot; &quot;902&quot; &quot;818&quot;
+[34] &quot;7&quot;   &quot;462&quot; &quot;475&quot; &quot;968&quot; &quot;290&quot; &quot;170&quot; &quot;447&quot; &quot;891&quot; &quot;804&quot; &quot;535&quot; &quot;188&quot;
+[45] &quot;216&quot; &quot;411&quot; &quot;602&quot; &quot;520&quot; &quot;632&quot; &quot;906&quot;
 </code></pre>
 <p>The first argument to <code>sample()</code> is the sampleFrame, the vector with the ID of each sample unit. The second argument size indicates the number of units to sample. The first argument describes whether the sample is drawn with replacement or not.</p>
-<blockquote>
-<h2 id="challenge-drawing-random-samples" class="Challenge">Challenge: Drawing random samples</h2>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2 id="challenge-drawing-random-samples"><span class="glyphicon glyphicon-pencil"></span>Challenge: Drawing random samples</h2>
+</div>
+<div class="panel-body">
 <p>Write R code to do the following tests:</p>
 <ol style="list-style-type: decimal">
 <li>Draw two random samples of the same size from the same frame. How many units from the first sample are also in the second?<br />
 </li>
 <li>Take a sample of size 200 with replacement set to TRUE. How many units are duplicated?</li>
 </ol>
-</blockquote>
+</div>
+</section>
 <p>So using our data.frame of Nebraska Counties, a size of 10 and without replacement:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">simple_sample &lt;-<span class="st"> </span><span class="kw">sample</span>(sample_frame$COUNTYNAME, <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)
 simple_sample</code></pre></div>
-<pre class="output"><code> [1] Pierce     Keith      Howard     Hall       Cedar      Wheeler   
- [7] Richardson Furnas     Logan      Holt      
+<pre class="output"><code> [1] Nemaha     York       Wheeler    Custer     Dawes      Valley    
+ [7] Banner     Dundy      Richardson Kearney   
 93 Levels: Adams Antelope Arthur Banner Blaine Boone Box Butte ... York
 </code></pre>
 <p>And there you go! What’s that? Your list of 10 is different from mine? Yes, and that is expected. Computers generate random numbers from iterative algorithms that start with a “seed” value. If you do not use the same seed then the sequence of random numbers will be different. Most of the time that’s what you want. However, if you want your calculations to be exactly reproducible you need to explicitly set the seed of the random number generator. The value you give it doesn’t matter. As long as you set the seed the sequence of random numbers that follow will be exactly the same.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">1000</span>, <span class="dt">size =</span> <span class="dv">10</span>)</code></pre></div>
-<pre class="output"><code> [1] 363 407 276 779 284 170 132 347  75 646
+<pre class="output"><code> [1] 979 431 781 153 468 638 659  76 695 594
 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">1000</span>, <span class="dt">size =</span> <span class="dv">10</span>) <span class="co"># different</span></code></pre></div>
-<pre class="output"><code> [1] 470 598 912 201 948 962 785 601 232 136
+<pre class="output"><code> [1] 673 157 113 997 567 171 264 123  32 690
 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">3987274</span>)
 <span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">1000</span>, <span class="dt">size =</span> <span class="dv">10</span>)</code></pre></div>
@@ -93,10 +97,14 @@ simple_sample</code></pre></div>
  [8] Custer   Sheridan Arthur  
 93 Levels: Adams Antelope Arthur Banner Blaine Boone Box Butte ... York
 </code></pre>
-<blockquote>
-<h2 id="challenge" class="Challenge">Challenge:</h2>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2 id="challenge"><span class="glyphicon glyphicon-pencil"></span>Challenge:</h2>
+</div>
+<div class="panel-body">
 <p>Draw a sample that is larger than the sample frame.</p>
-</blockquote>
+</div>
+</section>
 <p>There is another way we might want to sample a geographical space. It’s possible that we want to choose random points within a particular area. Each spatial polygon has a “bounding box” associated with it.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bbox</span>(counties)</code></pre></div>
 <pre class="output"><code>        min      max
@@ -169,11 +177,15 @@ pick &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="d
 <span class="kw">plot</span>(rp[pick], <span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="fig/generate-sample-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" /></p>
 <p>There’s another wrinkle here. The probability of picking any spot inside the state probably changes from east to west and south to north because the earth is a sphere. How much this matters probably depends on the projection in use as well as the extent over which the sample is being taken.</p>
-<blockquote>
-<h2 id="challenge-picking-random-points" class="Challenge">Challenge: Picking random points</h2>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2 id="challenge-picking-random-points"><span class="glyphicon glyphicon-pencil"></span>Challenge: Picking random points</h2>
+</div>
+<div class="panel-body">
 <p>Picking random points can work with any size polygon. Choose 10 random points from inside Cherry county.</p>
 <p>Hint: start by pulling the Cherry county polygon out of <code>counties</code>, which can be subsetted like a dataframe.</p>
-</blockquote>
+</div>
+</section>
         </div>
       </div>
       </article>

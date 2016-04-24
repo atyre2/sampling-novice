@@ -38,7 +38,7 @@ sampleIndex
 
 The first argument to `sample()` is the sampleFrame, the vector with the ID of each sample unit. The second argument size indicates the number of units to sample. The first argument describes whether the sample is drawn with replacement or not.
 
-> ## Challenge: Drawing random samples {.Challenge}
+> ## Challenge: Drawing random samples {.challenge}
 >
 > Write R code to do the following tests:
 >
@@ -91,7 +91,7 @@ set.seed(39858309)
 sample(sample_frame$COUNTYNAME, size = 10, prob = sample_frame$area)
 ```
 
-> ## Challenge:  {.Challenge}
+> ## Challenge:  {.challenge}
 >
 > Draw a sample that is larger than the sample 
 >  frame.
@@ -182,7 +182,7 @@ matters probably depends on the projection
 in use as well as the extent over which the
 sample is being taken. 
 
-> ## Challenge: Picking random points  {.Challenge}
+> ## Challenge: Picking random points  {.challenge}
 >
 > Picking random points can work with any
 > size polygon. Choose 10 random points 
