@@ -28,7 +28,152 @@
         <div class="col-md-10 col-md-offset-1">
                     <a href="index.html"><h1 class="title">Sampling</h1></a>
           <h2 class="subtitle">Generate a random sample</h2>
-          
+          <section class="objectives panel panel-warning">
+<div class="panel-heading">
+<h2 id="learning-objectives"><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
+</div>
+<div class="panel-body">
+<ul>
+<li>Explore the use of the R function <code>sample()</code></li>
+</ul>
+</div>
+</section>
+<p>Once you have decided to use simple random sampling to choose your sites, how do you do it? There are two steps.</p>
+<ul>
+<li>Create or obtain a vector of all possible sampling units</li>
+<li>Use <code>sample()</code> to select the units you will use.</li>
+</ul>
+<p>We’ve already done the first step. So now we look at the next step, picking our random sample. The <code>sample()</code> function will choose a random sample of <code>size = n</code> with or without replacement.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># code to be executed</span>
+sampleFrame &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="dv">1</span>:<span class="dv">1000</span>)
+sampleIndex &lt;-<span class="st"> </span><span class="kw">sample</span>(sampleFrame, <span class="dt">size =</span> <span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)
+sampleIndex</code></pre></div>
+<pre class="output"><code> [1] &quot;921&quot; &quot;777&quot; &quot;368&quot; &quot;862&quot; &quot;597&quot; &quot;634&quot; &quot;245&quot; &quot;73&quot;  &quot;2&quot;   &quot;944&quot; &quot;97&quot; 
+[12] &quot;576&quot; &quot;962&quot; &quot;843&quot; &quot;153&quot; &quot;103&quot; &quot;99&quot;  &quot;255&quot; &quot;317&quot; &quot;228&quot; &quot;674&quot; &quot;105&quot;
+[23] &quot;606&quot; &quot;861&quot; &quot;502&quot; &quot;759&quot; &quot;759&quot; &quot;267&quot; &quot;792&quot; &quot;545&quot; &quot;909&quot; &quot;758&quot; &quot;118&quot;
+[34] &quot;33&quot;  &quot;284&quot; &quot;212&quot; &quot;980&quot; &quot;680&quot; &quot;403&quot; &quot;351&quot; &quot;489&quot; &quot;952&quot; &quot;676&quot; &quot;324&quot;
+[45] &quot;583&quot; &quot;851&quot; &quot;946&quot; &quot;702&quot; &quot;689&quot; &quot;416&quot;
+</code></pre>
+<p>The first argument to <code>sample()</code> is the sampleFrame, the vector with the ID of each sample unit. The second argument size indicates the number of units to sample. The first argument describes whether the sample is drawn with replacement or not.</p>
+<blockquote>
+<h2 id="challenge-drawing-random-samples" class="Challenge">Challenge: Drawing random samples</h2>
+<p>Write R code to do the following tests:</p>
+<ol style="list-style-type: decimal">
+<li>Draw two random samples of the same size from the same frame. How many units from the first sample are also in the second?<br />
+</li>
+<li>Take a sample of size 200 with replacement set to TRUE. How many units are duplicated?</li>
+</ol>
+</blockquote>
+<p>So using our data.frame of Nebraska Counties, a size of 10 and without replacement:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">simple_sample &lt;-<span class="st"> </span><span class="kw">sample</span>(sample_frame$COUNTYNAME, <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)
+simple_sample</code></pre></div>
+<pre class="output"><code> [1] Pierce     Keith      Howard     Hall       Cedar      Wheeler   
+ [7] Richardson Furnas     Logan      Holt      
+93 Levels: Adams Antelope Arthur Banner Blaine Boone Box Butte ... York
+</code></pre>
+<p>And there you go! What’s that? Your list of 10 is different from mine? Yes, and that is expected. Computers generate random numbers from iterative algorithms that start with a “seed” value. If you do not use the same seed then the sequence of random numbers will be different. Most of the time that’s what you want. However, if you want your calculations to be exactly reproducible you need to explicitly set the seed of the random number generator. The value you give it doesn’t matter. As long as you set the seed the sequence of random numbers that follow will be exactly the same.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">1000</span>, <span class="dt">size =</span> <span class="dv">10</span>)</code></pre></div>
+<pre class="output"><code> [1] 363 407 276 779 284 170 132 347  75 646
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">1000</span>, <span class="dt">size =</span> <span class="dv">10</span>) <span class="co"># different</span></code></pre></div>
+<pre class="output"><code> [1] 470 598 912 201 948 962 785 601 232 136
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">3987274</span>)
+<span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">1000</span>, <span class="dt">size =</span> <span class="dv">10</span>)</code></pre></div>
+<pre class="output"><code> [1] 877 290 236 595 307 771 414  35 486 584
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">3987274</span>)
+<span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">1000</span>, <span class="dt">size =</span> <span class="dv">10</span>) <span class="co"># same! </span></code></pre></div>
+<pre class="output"><code> [1] 877 290 236 595 307 771 414  35 486 584
+</code></pre>
+<p>There are a few problems with our simple random sample of counties. Each county has the same probability of being selected, despite the fact that they have different areas. In effect, this means that a bit of ground in Lancaster county has a higher probability of being selected than a bit of ground in Cherry county. To get around this we need to weight the probability of choosing each county by its area. This is called a “probability proportional to size” sample. <code>sample()</code> has an argument called <code>prob</code> which takes a numeric vector. The only condition is that all the elements of this vector have to be positive.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">39858309</span>)
+<span class="kw">sample</span>(sample_frame$COUNTYNAME, <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">prob =</span> sample_frame$area)</code></pre></div>
+<pre class="output"><code> [1] Knox     Sioux    Webster  Cherry   Dawes    Cuming   Frontier
+ [8] Custer   Sheridan Arthur  
+93 Levels: Adams Antelope Arthur Banner Blaine Boone Box Butte ... York
+</code></pre>
+<blockquote>
+<h2 id="challenge" class="Challenge">Challenge:</h2>
+<p>Draw a sample that is larger than the sample frame.</p>
+</blockquote>
+<p>There is another way we might want to sample a geographical space. It’s possible that we want to choose random points within a particular area. Each spatial polygon has a “bounding box” associated with it.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bbox</span>(counties)</code></pre></div>
+<pre class="output"><code>        min      max
+x 159215.36 900447.3
+y  18672.44 359430.7
+</code></pre>
+<p>These have units of meters, which you can see by checking the projection information. Look for <code>+units=m</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">proj4string</span>(counties)</code></pre></div>
+<pre class="output"><code>[1] &quot;+proj=lcc +lat_1=40 +lat_2=43 +lat_0=39.83333333333334 +lon_0=-100 +x_0=500000 +y_0=0 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0&quot;
+</code></pre>
+<p>So, we can pick a random point between two values using <code>runif()</code>, which is a random sample from a uniform distribution.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bb &lt;-<span class="st"> </span><span class="kw">bbox</span>(counties)
+<span class="kw">runif</span>(<span class="dv">1</span>,<span class="dt">min=</span>bb[<span class="dv">1</span>,<span class="dv">1</span>],<span class="dt">max=</span>bb[<span class="dv">1</span>,<span class="dv">2</span>])</code></pre></div>
+<pre class="output"><code>[1] 244246.5
+</code></pre>
+<p>So we can pick 100 samples in both x and y dimensions like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rand_points &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="kw">runif</span>(<span class="dv">100</span>, <span class="dt">min=</span>bb[<span class="dv">1</span>,<span class="dv">1</span>],<span class="dt">max=</span>bb[<span class="dv">1</span>,<span class="dv">2</span>]),
+                          <span class="dt">y =</span> <span class="kw">runif</span>(<span class="dv">100</span>, <span class="dt">min=</span>bb[<span class="dv">2</span>,<span class="dv">1</span>],<span class="dt">max=</span>bb[<span class="dv">2</span>,<span class="dv">2</span>]))</code></pre></div>
+<p>Figuring out exactly where those points are can be tricky, but to make a map we need to put the coordinates into a spatialpointsDataFrame object that has the same projection information as the counties spatialPolygonsDataFrame does.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rp &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>(rand_points,<span class="dt">proj4string =</span> <span class="kw">CRS</span>(<span class="kw">proj4string</span>(counties)))
+<span class="kw">plot</span>(counties)
+<span class="kw">plot</span>(rp, <span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="fig/generate-sample-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" /></p>
+<p>The problem with this simple approach is obvious. Some of the points selected are outside Nebraska because the state is not a perfect match for it’s bounding box. The function <code>over()</code> can help here</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">over</span>(rp, counties))</code></pre></div>
+<pre class="output"><code>  OBJECTID FIPS_C FIPS_I FIPSST FIPSCO STPO COUNTYNAME
+1     1918  31131  31131     31    131   NE       Otoe
+2     1919  31165  31165     31    165   NE      Sioux
+3       85  31101  31101     31    101   NE      Keith
+4     2543  31159  31159     31    159   NE     Seward
+5       73  31041  31041     31    041   NE     Custer
+6       NA   &lt;NA&gt;     NA   &lt;NA&gt;   &lt;NA&gt; &lt;NA&gt;       &lt;NA&gt;
+                 CNTYDISP  CNTYSHORT  CNTYSORT CNTYCATEGO CNTYACTIVE
+1   Otoe County, Nebraska   OTOE, NE   NE-Otoe     County          Y
+2  Sioux County, Nebraska  SIOUX, NE  NE-Sioux     County          Y
+3  Keith County, Nebraska  KEITH, NE  NE-Keith     County          Y
+4 Seward County, Nebraska SEWARD, NE NE-Seward     County          Y
+5 Custer County, Nebraska CUSTER, NE NE-Custer     County          Y
+6                    &lt;NA&gt;       &lt;NA&gt;      &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;
+  INDEPCITY CNTYSTAND  SEATLAT   SEATLONG NAD83UTM NAD83STATE NAD27STATE
+1         N         Y 40.67667  -95.85889    26914      32104      32006
+2         N         Y 42.68722 -103.88222    26913      32104      32005
+3         N         Y 41.12806 -101.71917    26914      32104      32006
+4         N         Y 40.90694  -97.09861    26914      32104      32006
+5         N         Y 41.40194  -99.63889    26914      32104      32006
+6      &lt;NA&gt;      &lt;NA&gt;       NA         NA       NA         NA         NA
+  STATENAME CNTYSTARTD CNTYENDD   LASTCHGD NOTE   BOTTOM     TOP_
+1  Nebraska       &lt;NA&gt;     &lt;NA&gt; 2003/02/24 &lt;NA&gt; 40.52273 40.78445
+2  Nebraska       &lt;NA&gt;     &lt;NA&gt; 2003/02/24 &lt;NA&gt; 42.00050 43.00171
+3  Nebraska       &lt;NA&gt;     &lt;NA&gt; 2003/02/24 &lt;NA&gt; 41.00268 41.39552
+4  Nebraska       &lt;NA&gt;     &lt;NA&gt; 2003/02/24 &lt;NA&gt; 40.69784 41.04687
+5  Nebraska       &lt;NA&gt;     &lt;NA&gt; 2003/02/24 &lt;NA&gt; 41.04622 41.74159
+6      &lt;NA&gt;       &lt;NA&gt;     &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;       NA       NA
+       LEFT_     RIGHT_
+1  -96.46383  -95.70997
+2 -104.05315 -103.40097
+3 -102.05573 -101.24996
+4  -97.36851  -96.91059
+5 -100.25293  -99.20326
+6         NA         NA
+</code></pre>
+<p>So overlaying counties onto the points gives us missing values for all the points outside of Nebraska. We can use this to filter our sample. That would leave us with less than 100 points. So instead we choose many more points than we want, and then randomly sample 100 from the ones that are inside Nebraska.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rand_points &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="kw">runif</span>(<span class="dv">400</span>, <span class="dt">min=</span>bb[<span class="dv">1</span>,<span class="dv">1</span>],<span class="dt">max=</span>bb[<span class="dv">1</span>,<span class="dv">2</span>]),
+                          <span class="dt">y =</span> <span class="kw">runif</span>(<span class="dv">400</span>, <span class="dt">min=</span>bb[<span class="dv">2</span>,<span class="dv">1</span>],<span class="dt">max=</span>bb[<span class="dv">2</span>,<span class="dv">2</span>]))
+rp &lt;-<span class="st"> </span><span class="kw">SpatialPoints</span>(rand_points,<span class="dt">proj4string =</span> <span class="kw">CRS</span>(<span class="kw">proj4string</span>(counties)))
+inside &lt;-<span class="st"> </span>!<span class="kw">is.na</span>(<span class="kw">over</span>(rp, counties)$OBJECTID)
+rp &lt;-<span class="st"> </span>rp[inside]
+pick &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span>:<span class="kw">length</span>(rp), <span class="dt">size =</span> <span class="dv">100</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)
+<span class="kw">plot</span>(counties)
+<span class="kw">plot</span>(rp[pick], <span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="fig/generate-sample-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" /></p>
+<p>There’s another wrinkle here. The probability of picking any spot inside the state probably changes from east to west and south to north because the earth is a sphere. How much this matters probably depends on the projection in use as well as the extent over which the sample is being taken.</p>
+<blockquote>
+<h2 id="challenge-picking-random-points" class="Challenge">Challenge: Picking random points</h2>
+<p>Picking random points can work with any size polygon. Choose 10 random points from inside Cherry county.</p>
+<p>Hint: start by pulling the Cherry county polygon out of <code>counties</code>, which can be subsetted like a dataframe.</p>
+</blockquote>
         </div>
       </div>
       </article>
