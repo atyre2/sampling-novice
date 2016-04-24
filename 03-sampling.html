@@ -4,11 +4,25 @@
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
     <title>UNL: Sampling</title>
-    7756(cat _includes/header.html)
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="css/swc.css" />
+    <link rel="alternate" type="application/rss+xml" title="Software Carpentry Blog" href="http://software-carpentry.org/feed.xml"/>
+    <meta charset="UTF-8" />
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
   <body class="lesson">
     <div class="container card">
-      7756(cat _includes/banner.html)
+      <div class="banner">
+        <a href="http://snr.unl.edu" title="School of Natural Resources">
+          <img alt="UNL banner" src="img/R-UN_L4c_tag_4c.png" />
+        </a>
+      </div>
       <article>
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
@@ -42,22 +56,20 @@ The second package, <code>rgdal</code> you need to read the shape files. To do t
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages(c(&quot;sp&quot;, &quot;rgeos, rgdal&quot;)) # if needed</span>
 <span class="kw">library</span>(sp)
 <span class="kw">library</span>(rgeos)</code></pre></div>
-<pre class="output"><code>rgeos version: 0.3-12, (SVN revision 498)
+<pre class="output"><code>rgeos version: 0.3-11, (SVN revision 479)
  GEOS runtime version: 3.4.2-CAPI-1.8.2 r3921 
- Linking to sp version: 1.2-0 
+ Linking to sp version: 1.1-0 
  Polygon checking: TRUE 
 </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rgdal)</code></pre></div>
 <pre class="output"><code>Loading required package: methods
-</code></pre>
-<pre class="output"><code>rgdal: version: 1.0-7, (SVN revision 559)
+rgdal: version: 1.0-4, (SVN revision 548)
  Geospatial Data Abstraction Library extensions to R successfully loaded
  Loaded GDAL runtime: GDAL 1.11.2, released 2015/02/10
- Path to GDAL shared files: C:/Users/Drew/Documents/R/win-library/3.2/rgdal/gdal
- GDAL does not use iconv for recoding strings.
+ Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/3.2/Resources/library/rgdal/gdal
  Loaded PROJ.4 runtime: Rel. 4.9.1, 04 March 2015, [PJ_VERSION: 491]
- Path to PROJ.4 shared files: C:/Users/Drew/Documents/R/win-library/3.2/rgdal/proj
- Linking to sp version: 1.2-0 
+ Path to PROJ.4 shared files: /Library/Frameworks/R.framework/Versions/3.2/Resources/library/rgdal/proj
+ Linking to sp version: 1.1-1 
 </code></pre>
 <p>We read in the two shapefiles using the layer names without the file extensions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">counties &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span class="st">&quot;data/government_units&quot;</span>, <span class="dt">layer =</span> <span class="st">&quot;county_nrcs_a_ne&quot;</span>)</code></pre></div>
@@ -144,28 +156,28 @@ sample_frame &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>
 <p>The function <code>over()</code> does all spatial intersection operations in <code>sp</code>. By setting <code>returnList = TRUE</code> <code>over()</code> returns a list with one component for each polygon in <code>counties</code>. Inside each component is the information from all polygons in <code>annual_precip</code> that intersect with that polygon of <code>counties</code>. So the first county intersects with 4 precipitation polygons with average annual precipitation between 17 and 20 inches. We need to aggregate those 4 values into one. If we leave <code>returnList = FALSE</code> (the default), we get just one value per row</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">over</span>(counties, annual_precip))</code></pre></div>
 <pre class="output"><code>  PrecipInch FIPS_S Inches
+0         17     31     17
 1         17     31     17
-2         17     31     17
-3         16     31     16
-4         26     31     26
-5         29     31     29
-6         28     31     28
+2         16     31     16
+3         26     31     26
+4         29     31     29
+5         28     31     28
 </code></pre>
 <p>But the problem is that <code>over()</code> has just returned the precipitation of the first polygon. A better way to do aggregate is to calculate the mean. <code>over()</code> has an argument <code>fn</code> that specifies the function to use for aggregation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">over</span>(counties, annual_precip, <span class="dt">fn =</span> mean))</code></pre></div>
 <pre class="error"><code>Warning in mean.default(X[[i]], ...): argument is not numeric or logical:
 returning NA
-
-Warning in mean.default(X[[i]], ...): argument is not numeric or logical:
+</code></pre>
+<pre class="error"><code>Warning in mean.default(X[[i]], ...): argument is not numeric or logical:
 returning NA
 </code></pre>
 <pre class="output"><code>  PrecipInch FIPS_S Inches
-1       18.5     NA   18.5
-2       20.0     NA   20.0
-3       17.5     NA   17.5
-4       27.0     NA   27.0
+0       18.5     NA   18.5
+1       20.0     NA   20.0
+2       17.5     NA   17.5
+3       27.0     NA   27.0
+4       29.0     NA   29.0
 5       29.0     NA   29.0
-6       29.0     NA   29.0
 </code></pre>
 <p>That’s better. The warnings arise because the FIPS_S field is something that taking a mean of is nonsensical. I also just want one of those columns.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sample_frame &lt;-<span class="st"> </span><span class="kw">cbind</span>(sample_frame,
@@ -203,8 +215,16 @@ attr(,&quot;package&quot;)
         </div>
       </div>
       </article>
-      7756(cat _includes/footer.html)
+      <div class="footer">
+        <a class="label swc-blue-bg" href="http://software-carpentry.org">Thanks to Software Carpentry</a>
+        <a class="label swc-blue-bg" href="https://github.com/atyre2/sampling-novice">Source</a>
+        <a class="label swc-blue-bg" href="mailto:atyre2@unl.edu">Contact</a>
+        <a class="label swc-blue-bg" href="LICENSE.html">License</a>
+      </div>
     </div>
-    7756(cat _includes/javascript.html)
+    <!-- Javascript placed at the end of the document so the pages load faster -->
+    <script src="http://software-carpentry.org/v5/js/jquery-1.9.1.min.js"></script>
+    <script src="css/bootstrap/bootstrap-js/bootstrap.js"></script>
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
   </body>
 </html>

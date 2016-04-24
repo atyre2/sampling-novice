@@ -43,9 +43,9 @@ library(rgeos)
 
 
 ~~~{.output}
-rgeos version: 0.3-12, (SVN revision 498)
+rgeos version: 0.3-11, (SVN revision 479)
  GEOS runtime version: 3.4.2-CAPI-1.8.2 r3921 
- Linking to sp version: 1.2-0 
+ Linking to sp version: 1.1-0 
  Polygon checking: TRUE 
 
 ~~~
@@ -60,20 +60,13 @@ library(rgdal)
 
 ~~~{.output}
 Loading required package: methods
-
-~~~
-
-
-
-~~~{.output}
-rgdal: version: 1.0-7, (SVN revision 559)
+rgdal: version: 1.0-4, (SVN revision 548)
  Geospatial Data Abstraction Library extensions to R successfully loaded
  Loaded GDAL runtime: GDAL 1.11.2, released 2015/02/10
- Path to GDAL shared files: C:/Users/Drew/Documents/R/win-library/3.2/rgdal/gdal
- GDAL does not use iconv for recoding strings.
+ Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/3.2/Resources/library/rgdal/gdal
  Loaded PROJ.4 runtime: Rel. 4.9.1, 04 March 2015, [PJ_VERSION: 491]
- Path to PROJ.4 shared files: C:/Users/Drew/Documents/R/win-library/3.2/rgdal/proj
- Linking to sp version: 1.2-0 
+ Path to PROJ.4 shared files: /Library/Frameworks/R.framework/Versions/3.2/Resources/library/rgdal/proj
+ Linking to sp version: 1.1-1 
 
 ~~~
 
@@ -258,12 +251,12 @@ head(over(counties, annual_precip))
 
 ~~~{.output}
   PrecipInch FIPS_S Inches
+0         17     31     17
 1         17     31     17
-2         17     31     17
-3         16     31     16
-4         26     31     26
-5         29     31     29
-6         28     31     28
+2         16     31     16
+3         26     31     26
+4         29     31     29
+5         28     31     28
 
 ~~~
 
@@ -282,6 +275,11 @@ head(over(counties, annual_precip, fn = mean))
 Warning in mean.default(X[[i]], ...): argument is not numeric or logical:
 returning NA
 
+~~~
+
+
+
+~~~{.error}
 Warning in mean.default(X[[i]], ...): argument is not numeric or logical:
 returning NA
 
@@ -291,12 +289,12 @@ returning NA
 
 ~~~{.output}
   PrecipInch FIPS_S Inches
-1       18.5     NA   18.5
-2       20.0     NA   20.0
-3       17.5     NA   17.5
-4       27.0     NA   27.0
+0       18.5     NA   18.5
+1       20.0     NA   20.0
+2       17.5     NA   17.5
+3       27.0     NA   27.0
+4       29.0     NA   29.0
 5       29.0     NA   29.0
-6       29.0     NA   29.0
 
 ~~~
 
