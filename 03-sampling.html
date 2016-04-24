@@ -4,37 +4,25 @@
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
     <title>UNL: Sampling</title>
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.css" />
-    <link rel="stylesheet" type="text/css" href="css/swc.css" />
-    <link rel="alternate" type="application/rss+xml" title="Software Carpentry Blog" href="http://software-carpentry.org/feed.xml"/>
-    <meta charset="UTF-8" />
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    7756(cat _includes/header.html)
   </head>
   <body class="lesson">
     <div class="container card">
-      <div class="banner">
-        <a href="http://snr.unl.edu" title="School of Natural Resources">
-          <img alt="UNL banner" src="img/R-UN_L4c_tag_4c.png" />
-        </a>
-      </div>
+      7756(cat _includes/banner.html)
       <article>
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
                     <a href="index.html"><h1 class="title">Sampling</h1></a>
-          <h2 class="subtitle">Generate a random sample</h2>
+          <h2 class="subtitle">Using spatial data in R</h2>
           <section class="objectives panel panel-warning">
 <div class="panel-heading">
 <h2 id="learning-objectives"><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
 </div>
 <div class="panel-body">
 <ul>
-<li>Explore the use of the R function <code>sample()</code></li>
+<li>Load spatial data into R</li>
+<li>Intersect two polygon layers</li>
+<li>Aggregate a raster across a list of spatial polygons</li>
 </ul>
 </div>
 </section>
@@ -43,31 +31,180 @@
 <li>Create or obtain a vector of all possible sampling units</li>
 <li>Use <code>sample()</code> to select the units you will use.</li>
 </ul>
-<p>In the following we load the list of 3rd order HUCs found in Nebraska, and draw a random sample of 50 of them with replacement.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># code to be exectued</span>
-sampleFrame &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="dv">1</span>:<span class="dv">1000</span>)
-sampleIndex &lt;-<span class="st"> </span><span class="kw">sample</span>(sampleFrame, <span class="dt">size =</span> <span class="dv">50</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)
-sampleIndex</code></pre></div>
-<pre class="output"><code> [1] &quot;140&quot; &quot;335&quot; &quot;265&quot; &quot;881&quot; &quot;489&quot; &quot;126&quot; &quot;758&quot; &quot;619&quot; &quot;610&quot; &quot;570&quot; &quot;22&quot; 
-[12] &quot;497&quot; &quot;132&quot; &quot;252&quot; &quot;243&quot; &quot;729&quot; &quot;198&quot; &quot;716&quot; &quot;290&quot; &quot;874&quot; &quot;508&quot; &quot;576&quot;
-[23] &quot;234&quot; &quot;629&quot; &quot;412&quot; &quot;325&quot; &quot;479&quot; &quot;967&quot; &quot;477&quot; &quot;600&quot; &quot;948&quot; &quot;190&quot; &quot;98&quot; 
-[34] &quot;315&quot; &quot;26&quot;  &quot;981&quot; &quot;431&quot; &quot;704&quot; &quot;868&quot; &quot;385&quot; &quot;757&quot; &quot;951&quot; &quot;880&quot; &quot;867&quot;
-[45] &quot;296&quot; &quot;85&quot;  &quot;735&quot; &quot;210&quot; &quot;201&quot; &quot;542&quot;
+<p>This topic focuses on the first problem. In the following we load a dataset that provides a list of Nebraska Counties and their boundaries, and a 2nd dataset that has a raster of average annual precipitation across Nebraska. I obtained the original datasets from the <a href="https://gdg.sc.egov.usda.gov/">NRCS Geospatial Data Gateway</a>. However there are several steps involved in downloading data, so to ensure we all have the same data I have placed two zip files in a public folder on the UNL Box server. <a href="https://unl.box.com/s/hhmwj9glyr785ixzdbo8fubkirljwg6c">The county boundaries are here</a> and <a href="https://unl.box.com/s/l6tzuuc79kiyiyaytbgm0u05ea2teahu">the annual average precipitation data are here</a>. After you download these files extract them into a data subdirectory of your project directory. You did create a fresh project directory, right? Your directory tree should look like this:</p>
+<div class="figure">
+<img src="img/03-Directory_tree.png" alt="Directory structure" />
+<p class="caption">Directory structure</p>
+</div>
+<p>If it doesn’t, just be sure to modify the paths in the code below so that it works. As always, I assume that you have started RStudio with a project, and that the working directory is the project directory.</p>
+<p>We need three packages to work with shapefiles. The first is <code>sp</code>, which has the standard spatial datastructures for R.<br />
+The second package, <code>rgdal</code> you need to read the shape files. To do the intersection of the two layers we need the <code>rgeos</code> package. So:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages(c(&quot;sp&quot;, &quot;rgeos, rgdal&quot;)) # if needed</span>
+<span class="kw">library</span>(sp)
+<span class="kw">library</span>(rgeos)</code></pre></div>
+<pre class="output"><code>rgeos version: 0.3-12, (SVN revision 498)
+ GEOS runtime version: 3.4.2-CAPI-1.8.2 r3921 
+ Linking to sp version: 1.2-0 
+ Polygon checking: TRUE 
 </code></pre>
-<p>The first argument to <code>sample()</code> is the sampleFrame, the vector with the ID of each sample unit. The second argument size indicates the number of units to sample. The first argument describes whether the sample is drawn with replacement or not.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rgdal)</code></pre></div>
+<pre class="output"><code>Loading required package: methods
+</code></pre>
+<pre class="output"><code>rgdal: version: 1.0-7, (SVN revision 559)
+ Geospatial Data Abstraction Library extensions to R successfully loaded
+ Loaded GDAL runtime: GDAL 1.11.2, released 2015/02/10
+ Path to GDAL shared files: C:/Users/Drew/Documents/R/win-library/3.2/rgdal/gdal
+ GDAL does not use iconv for recoding strings.
+ Loaded PROJ.4 runtime: Rel. 4.9.1, 04 March 2015, [PJ_VERSION: 491]
+ Path to PROJ.4 shared files: C:/Users/Drew/Documents/R/win-library/3.2/rgdal/proj
+ Linking to sp version: 1.2-0 
+</code></pre>
+<p>We read in the two shapefiles using the layer names without the file extensions.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">counties &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span class="st">&quot;data/government_units&quot;</span>, <span class="dt">layer =</span> <span class="st">&quot;county_nrcs_a_ne&quot;</span>)</code></pre></div>
+<pre class="output"><code>OGR data source with driver: ESRI Shapefile 
+Source: &quot;data/government_units&quot;, layer: &quot;county_nrcs_a_ne&quot;
+with 93 features
+It has 28 fields
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(counties)</code></pre></div>
+<pre class="output"><code>[1] &quot;SpatialPolygonsDataFrame&quot;
+attr(,&quot;package&quot;)
+[1] &quot;sp&quot;
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(counties)</code></pre></div>
+<p><img src="fig/load-spatial-data-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">annual_precip &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span class="st">&quot;data/climate/precipitation&quot;</span>, <span class="dt">layer =</span> <span class="st">&quot;precip1981_2010_a_ne&quot;</span>)</code></pre></div>
+<pre class="output"><code>OGR data source with driver: ESRI Shapefile 
+Source: &quot;data/climate/precipitation&quot;, layer: &quot;precip1981_2010_a_ne&quot;
+with 23 features
+It has 3 fields
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(annual_precip)</code></pre></div>
+<pre class="output"><code>[1] &quot;SpatialPolygonsDataFrame&quot;
+attr(,&quot;package&quot;)
+[1] &quot;sp&quot;
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(annual_precip)</code></pre></div>
+<p><img src="fig/load-spatial-data-unnamed-chunk-3-2.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" /></p>
+<p>So we’ve managed to load in both layers. There are many functions that can read ESRI shapefiles. <code>readOGR()</code> from package <code>rgdal</code> has an important advantage however. It also loads the <em>spatial projection</em> information present in the file. The next step is to use the precipitation data to add some information to each of the polygons in the county data. We also want to extract the area of each county. The goal is to obtain a <code>data.frame</code> object with one row for each county. It needs ID, area, and mean precipitation columns.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># extract the dataframe from counties</span>
+sample_frame &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(counties)
+<span class="co"># take a look at the variables</span>
+<span class="kw">names</span>(sample_frame) <span class="co"># lots of stuff</span></code></pre></div>
+<pre class="output"><code> [1] &quot;OBJECTID&quot;   &quot;FIPS_C&quot;     &quot;FIPS_I&quot;     &quot;FIPSST&quot;     &quot;FIPSCO&quot;    
+ [6] &quot;STPO&quot;       &quot;COUNTYNAME&quot; &quot;CNTYDISP&quot;   &quot;CNTYSHORT&quot;  &quot;CNTYSORT&quot;  
+[11] &quot;CNTYCATEGO&quot; &quot;CNTYACTIVE&quot; &quot;INDEPCITY&quot;  &quot;CNTYSTAND&quot;  &quot;SEATLAT&quot;   
+[16] &quot;SEATLONG&quot;   &quot;NAD83UTM&quot;   &quot;NAD83STATE&quot; &quot;NAD27STATE&quot; &quot;STATENAME&quot; 
+[21] &quot;CNTYSTARTD&quot; &quot;CNTYENDD&quot;   &quot;LASTCHGD&quot;   &quot;NOTE&quot;       &quot;BOTTOM&quot;    
+[26] &quot;TOP_&quot;       &quot;LEFT_&quot;      &quot;RIGHT_&quot;    
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sample_frame &lt;-<span class="st"> </span>sample_frame[,<span class="kw">c</span>(<span class="st">&quot;OBJECTID&quot;</span>,<span class="st">&quot;COUNTYNAME&quot;</span>)]
+<span class="co"># extract precipitation information for each county</span>
+<span class="kw">head</span>(<span class="kw">over</span>(counties, annual_precip, <span class="dt">returnList =</span> <span class="ot">TRUE</span>))</code></pre></div>
+<pre class="output"><code>[[1]]
+  PrecipInch FIPS_S Inches
+4         17     31     17
+5         18     31     18
+6         19     31     19
+7         20     31     20
+
+[[2]]
+   PrecipInch FIPS_S Inches
+4          17     31     17
+5          18     31     18
+6          19     31     19
+7          20     31     20
+8          21     31     21
+9          22     31     22
+10         23     31     23
+
+[[3]]
+  PrecipInch FIPS_S Inches
+3         16     31     16
+4         17     31     17
+5         18     31     18
+6         19     31     19
+
+[[4]]
+   PrecipInch FIPS_S Inches
+13         26     31     26
+14         27     31     27
+15         28     31     28
+
+[[5]]
+   PrecipInch FIPS_S Inches
+16         29     31     29
+
+[[6]]
+   PrecipInch FIPS_S Inches
+15         28     31     28
+16         29     31     29
+17         30     31     30
+</code></pre>
+<p>The function <code>over()</code> does all spatial intersection operations in <code>sp</code>. By setting <code>returnList = TRUE</code> <code>over()</code> returns a list with one component for each polygon in <code>counties</code>. Inside each component is the information from all polygons in <code>annual_precip</code> that intersect with that polygon of <code>counties</code>. So the first county intersects with 4 precipitation polygons with average annual precipitation between 17 and 20 inches. We need to aggregate those 4 values into one. If we leave <code>returnList = FALSE</code> (the default), we get just one value per row</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">over</span>(counties, annual_precip))</code></pre></div>
+<pre class="output"><code>  PrecipInch FIPS_S Inches
+1         17     31     17
+2         17     31     17
+3         16     31     16
+4         26     31     26
+5         29     31     29
+6         28     31     28
+</code></pre>
+<p>But the problem is that <code>over()</code> has just returned the precipitation of the first polygon. A better way to do aggregate is to calculate the mean. <code>over()</code> has an argument <code>fn</code> that specifies the function to use for aggregation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">over</span>(counties, annual_precip, <span class="dt">fn =</span> mean))</code></pre></div>
+<pre class="error"><code>Warning in mean.default(X[[i]], ...): argument is not numeric or logical:
+returning NA
+
+Warning in mean.default(X[[i]], ...): argument is not numeric or logical:
+returning NA
+</code></pre>
+<pre class="output"><code>  PrecipInch FIPS_S Inches
+1       18.5     NA   18.5
+2       20.0     NA   20.0
+3       17.5     NA   17.5
+4       27.0     NA   27.0
+5       29.0     NA   29.0
+6       29.0     NA   29.0
+</code></pre>
+<p>That’s better. The warnings arise because the FIPS_S field is something that taking a mean of is nonsensical. I also just want one of those columns.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sample_frame &lt;-<span class="st"> </span><span class="kw">cbind</span>(sample_frame,
+                      <span class="dt">Precip =</span> <span class="kw">over</span>(counties, annual_precip, <span class="dt">fn =</span> mean)$PrecipInch)</code></pre></div>
+<p>I also want to extract the area of each county. To do this I pull out the list of polygons, and ask each polygon for it’s area. These are S4 objects so the <code>@</code> operator is used instead of <code>$</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">slotNames</span>(counties)</code></pre></div>
+<pre class="output"><code>[1] &quot;data&quot;        &quot;polygons&quot;    &quot;plotOrder&quot;   &quot;bbox&quot;        &quot;proj4string&quot;
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">slotNames</span>(counties@polygons) <span class="co"># no slots ... </span></code></pre></div>
+<pre class="output"><code>NULL
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(counties@polygons)</code></pre></div>
+<pre class="output"><code>[1] &quot;list&quot;
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(counties@polygons[[<span class="dv">1</span>]])</code></pre></div>
+<pre class="output"><code>[1] &quot;Polygons&quot;
+attr(,&quot;package&quot;)
+[1] &quot;sp&quot;
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">slotNames</span>(counties@polygons[[<span class="dv">1</span>]]) <span class="co"># there it is!</span></code></pre></div>
+<pre class="output"><code>[1] &quot;Polygons&quot;  &quot;plotOrder&quot; &quot;labpt&quot;     &quot;ID&quot;        &quot;area&quot;     
+</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sample_frame$area &lt;-<span class="st"> </span><span class="kw">sapply</span>(counties@polygons, function(x) x@area)
+
+<span class="kw">head</span>(sample_frame)</code></pre></div>
+<pre class="output"><code>  OBJECTID COUNTYNAME Precip        area
+0       67      Chase   18.5  2323948967
+1       68     Cherry   20.0 15559306937
+2       69   Cheyenne   17.5  3096764800
+3       70       Clay   27.0  1484840545
+4       71     Colfax   29.0  1083386436
+5       72     Cuming   29.0  1487107313
+</code></pre>
+<p>And now we’re ready to pick a random sample!</p>
         </div>
       </div>
       </article>
-      <div class="footer">
-        <a class="label swc-blue-bg" href="http://software-carpentry.org">Thanks to Software Carpentry</a>
-        <a class="label swc-blue-bg" href="https://github.com/atyre2/sampling-novice">Source</a>
-        <a class="label swc-blue-bg" href="mailto:atyre2@unl.edu">Contact</a>
-        <a class="label swc-blue-bg" href="LICENSE.html">License</a>
-      </div>
+      7756(cat _includes/footer.html)
     </div>
-    <!-- Javascript placed at the end of the document so the pages load faster -->
-    <script src="http://software-carpentry.org/v5/js/jquery-1.9.1.min.js"></script>
-    <script src="css/bootstrap/bootstrap-js/bootstrap.js"></script>
-    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+    7756(cat _includes/javascript.html)
   </body>
 </html>

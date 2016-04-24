@@ -7,7 +7,8 @@ minutes: 10
 
 ```{r, include=FALSE}
 source("tools/chunk-options.R")
-opts_chunk$set(fig.path = "fig/generate-sample-")
+opts_chunk$set(fig.path = "fig/why-worry-")
+.libPaths("C:/Users/Drew/Documents/R/win-library/3.2")
 ```
 
 > ## Learning Objectives {.objectives}

@@ -12,7 +12,8 @@ Paragraph(s) of introductory material.
 
 1.  [The data life cycle](01-sampling.html)
 2.  [Why worry?](02-sampling.html)
-2.  [Generate a sample](03-sampling.html)
+3.  [Using spatial data in R](03-sampling.html)
+2.  [Generate a sample](04-sampling.html)
 
 
 ## Other Resources
