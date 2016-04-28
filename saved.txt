@@ -1,4 +1,3 @@
----
 layout: page
 title: Sampling
 subtitle: Using spatial data in R
@@ -141,8 +140,9 @@ And now we're ready to pick a random sample!
 > ## Tip: extracting a subset {.callout}
 > These spatial objects can be subsetted just
 > like regular R objects. spatialpolygonsDataFrame objects
->can be treated like a dataframe with the square brackets. The polygons are rows 
->and the columns are the 
+> can be treated like a dataframe with the square brackets. The polygons are rows 
+> and the columns are the variables in the
+> data.frame.
 
 ```{r include=FALSE}
 save(sample_frame,file="data/sample_frame.RData")
